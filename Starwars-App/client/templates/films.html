@@ -1,0 +1,54 @@
+
+---
+name: films
+url: /films/:id?p=
+controller: FilmsCtrl
+---
+
+<div class="grid-content films" ng-show="films">
+    <a class="button pagination"
+      ng-show="prevPage"
+      ui-sref="films({ p: prevPage })">
+      Back to Page {{prevPage}}
+    </a>
+  
+    <div class="grid-content shrink">
+      <ul class="menu-bar vertical">
+        <li ng-repeat="film in films.results">
+            <a ui-sref="films({ id:( film.url | lastdir ), p:'' })">
+                {{film.title | capitalize}}
+            </a>
+        </li>
+      </ul>
+    </div>
+
+    <a class="button pagination"
+      ng-show="nextPage"
+      ui-sref="films({ p: nextPage })">
+      To Page {{nextPage}}
+    </a>
+</div> 
+
+<div class="grid-content film" ng-show="film" ng-init="crawl = 'false'">
+  <h1>Episode {{film.episode_id | uppercase}}: {{film.title}}</h1>
+  <hr>
+  
+  <dl>
+    <dt>Opening Crawl</dt>
+      <dd ng-class="{'crawl':crawl === true}" ng-click="crawl === true ? crawl = false : crawl = true">
+        {{film.opening_crawl}}
+      </dd>
+
+    <dt>Director</dt>
+      <dd>{{film.director | capitalize}}</dd>
+        
+    <dt>Producer</dt>
+      <dd>{{film.producer | capitalize}}</dd>
+        
+    <dt>Characters</dt>
+      <dd ng-repeat="character in film.characters"
+        ui-sref="people({ id:(character | lastdir), p:''})">
+        <span get-prop prop="'name'" url="character">{{character}}</span>
+      </dd>
+  </dl>
+</div>
